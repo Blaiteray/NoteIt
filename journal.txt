@@ -34,3 +34,8 @@ Next I did some graphical adjustmens. These are just hover effects and colors. N
 it took me some time to make evryting memory efficient. I had to make sure the temporary memory gets deleted perfectly to
 prevent memory leak. I didn't bother delteing everythig after the program was closed, because python should do that
 automatically.
+
+So, I published this project in github after I was initially done. Then I shared the release version with one of my
+classmate, he give me his opinion on different thigs, which helped me to understand the problems from user perspective.
+I fixed 2 issue he mentioned, one is removing the default text which needed to be deleted before adding new notes, and
+adding a buttion after search icon which resets the search. I'll try to add some shortcut when I get more time.

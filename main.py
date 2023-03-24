@@ -90,15 +90,15 @@ def remove_widget_recursive(widget):
 class MainLayout(FloatLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.new_icon = HoverButton((0.6,0.3,0,9), (0.1,0.2,0,3),
+        self.new_icon = HoverButton((0.1,0.2,0,0.5), (0.1,0.2,0,0.9),
             text="N", 
+            background_color=(0.1,0.2,0,0.9),
             pos=(5,555), 
             size=(40, 40),
             font_name="AnonymousPro-Bold",
             font_size='20sp',
             color=(1, 1, 1, 1),
             size_hint=(None, None))
-        self.new_icon.background_color= (0.1,0.2,0,3) if self.new_icon.state == 'normal' else (0.6,0.3,0,9)
         self.new_icon.bind(on_release=self.new_selection_callback)
 
         self.main_label = Label(text="NoteIt", 
@@ -113,22 +113,33 @@ class MainLayout(FloatLayout):
         #     Rectangle(pos=self.main_label.pos, size=self.main_label.size)
         self.search_box = HoverTextInput((1, 1, 1, 1), (1, 0.95, 0.9, 1),
             text='',
-            background_color=(1, 0.9, 0.8, 1),
+            hint_text = 'Search from notes',
+            background_color=(1, 0.95, 0.9, 1),
             pos=(360, 560), 
             size=(430, 30), 
             font_name="AnonymousPro-Regular",
             multiline=False,
             size_hint=(None, None))
-        self.search_icon = HoverButton((0.6,0.3,0,9), (0.1,0.2,0,3),
+        self.search_icon = HoverButton((0.1,0.2,0,0.8), (0.1,0.2,0,0.95),
             text="Go", 
-            pos=(755,563), 
-            size=(30, 25),
+            background_color=(0.1,0.2,0,0.9),
+            pos=(730,563), 
+            size=(28, 25),
             font_name="AnonymousPro-Bold",
-            font_size='20sp',
+            font_size='18sp',
             color=(1, 1, 1, 1),
             size_hint=(None, None))
-        self.search_icon.background_color= (0.1,0.2,0,3) if self.search_icon.state == 'normal' else (0.6,0.3,0,9)
         self.search_icon.bind(on_release=self.search_icon_callback)
+        self.search_reset_icon = HoverButton((0.1,0.2,0,0.8), (0.1,0.2,0,0.95),
+            text="X", 
+            background_color=(0.1,0.2,0,0.9),
+            pos=(760,563), 
+            size=(25, 25),
+            # font_name="AnonymousPro-Bold",
+            font_size='18sp',
+            color=(1, 1, 1, 1),
+            size_hint=(None, None))
+        self.search_reset_icon.bind(on_release=self.search_reset_icon_callback)
 
 
         with self.canvas:
@@ -144,6 +155,7 @@ class MainLayout(FloatLayout):
         self.add_widget(self.main_label)
         self.add_widget(self.search_box)
         self.add_widget(self.search_icon)
+        self.add_widget(self.search_reset_icon)
         self.add_widget(self.note_list_panel)
 
 
@@ -173,15 +185,15 @@ class MainLayout(FloatLayout):
             return temp
 
         for note in note_list:
-            note_containing_buttion = HoverButton((0.3,0.6,0,9), (1, 1, 1, 0.3), 
+            note_containing_buttion = HoverButton((0.5, 0.2, 0, 0.0), (0.5, 0.2, 0, 0.5),
                     text=note, 
+                    background_color=(0.5, 0.2, 0, 0.5),
                     font_name="AnonymousPro-Bold",
                     font_size='16sp',
                     size_hint_y=None,
                     border=(-20, 16, 20, 16),
                     height=40)
             note_containing_buttion.bind(on_release=self.note_selection_callback)
-            note_containing_buttion.background_color = (1, 1, 1, 0.3) if self.search_icon.state == 'normal' else (0.3,0.6,0,9)
             note_containing_buttion.on_enter = color_on_enter(note_containing_buttion)
             note_button_container.add_widget(note_containing_buttion)
         note_list_container.add_widget(note_button_container)
@@ -197,33 +209,37 @@ class MainLayout(FloatLayout):
     def search_icon_callback(self, i):
         self.update_note_list_panel(self.search_box.text)
 
+    def search_reset_icon_callback(self, i):
+        self.search_box.text = ''
+        self.update_note_list_panel('')
+
 
 
     def new_selection_callback(self, i):
         content = FloatLayout()
-        note = TextInput(text="Write your note...",
+        note = TextInput(hint_text="Write your note...",
             pos=(253, 250), 
             size=(295, 120), 
             font_name="AnonymousPro-Regular",
             size_hint=(None, None))
-        note_add_button = HoverButton((0.7,0.6,0.5,0.9), (0.7,0.4,0.0,0.9), 
+        note_add_button = HoverButton((0.4,0.7,0.0,0.5), (0.4,0.7,0.0,0.9), 
             text="Add", 
+            background_color=(0.4,0.7,0.0,0.9), 
             pos=(315,205), 
             size=(80, 30),
             font_name="AnonymousPro-Bold",
             font_size='16sp',
             color=(1, 1, 1, 1),
             size_hint=(None, None))
-        note_add_button.background_color= (0.7,0.4,0.0,0.9) if self.new_icon.state == 'normal' else (0.9,0.8,0.7,3)
-        close_popup_button = HoverButton((0.9,0.8,0.7,3), (0.7,0.4,0.0,0.9),
+        close_popup_button = HoverButton((0.7,0.4,0.0,0.5), (0.7,0.4,0.0,0.9),
             text="Close", 
+            background_color=(0.7,0.4,0.0,0.9),
             pos=(400,205), 
             size=(80, 30),
             font_name="AnonymousPro-Bold",
             font_size='16sp',
             color=(1, 1, 1, 1),
             size_hint=(None, None))
-        close_popup_button.background_color= (0.7,0.4,0.0,0.9) if self.new_icon.state == 'normal' else (0.9,0.8,0.7,3)
         content.add_widget(note)
         content.add_widget(note_add_button)
         content.add_widget(close_popup_button)
@@ -266,24 +282,24 @@ class MainLayout(FloatLayout):
             font_name="AnonymousPro-Regular",
             size_hint=(None, None))
         note.cursor = (0, 0)
-        note_edit_button = HoverButton((0.3,0.6,0,9), (0.1,0.9,0.2,3),
+        note_edit_button = HoverButton((0.1,0.9,0.2,0.4), (0.1,0.9,0.2,0.8),
             text="OK", 
+            background_color=(0.1,0.9,0.2,0.7),
             pos=(400,205), 
             size=(80, 30),
             font_name="AnonymousPro-Bold",
             font_size='16sp',
             color=(1, 1, 1, 1),
             size_hint=(None, None))
-        note_edit_button.background_color= (0.1,0.9,0.2,3) if self.new_icon.state == 'normal' else (0.3,0.6,0,9)
-        delete_note_button = HoverButton((0.6,0.1,0,9), (0.9,0.2,0.1,3),
+        delete_note_button = HoverButton((0.9,0.2,0.1,0.4), (0.9,0.2,0.1,0.8),
             text="Delete", 
+            background_color=(0.9,0.2,0.1,0.8),
             pos=(315,205), 
             size=(80, 30),
             font_name="AnonymousPro-Bold",
             font_size='16sp',
             color=(1, 1, 1, 1),
             size_hint=(None, None))
-        delete_note_button.background_color= (0.9,0.2,0.1,3) if self.new_icon.state == 'normal' else (0.6,0.1,0,9)
         content.add_widget(note)
         content.add_widget(note_edit_button)
         content.add_widget(delete_note_button)
