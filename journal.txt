@@ -1,0 +1,36 @@
+I am wrinting a program to store some text, say notes. Finding some unique name is troublesome, so I just named it NoteIt.
+I used python with kivy gui library to implement ui. First, I had to do topbar design. So I added a button to add new note
+in the top-leftmost position, then added the name of the program, then in the top-rightmost, I added a text input box to 
+search from notes to find notes fast if there's too many notes present. Added a little search button to implement the
+filtering. Then added a nice background image, then the list of notes in the middle of window, which can be scrolled, and
+added a popup window which will be opened after pressing the new button at the top-leftmost position. Similar window will
+be opened after pressing each item in the note colleciton section, which was added in the middle. Kivy don't have any 
+good design in widgets by default. So I had to hardcode everything to make things look good. To make texts look good, I
+added one font family from google as well, which is named 'AnnonymousPro', I don't know if this is a common name for fonts
+collected from annonymous source or not, but it doesn't matter. The thing is, it's copyright free and also free of cost.
+
+I am writing this code in one file, which is getting bigger and bigger. I think I need to create some files to paritition
+the code in modules and combine them in main file to make the code more readable. But this can create more complexity for
+the first time creation, where a lot of thigs to add, connect, and design, multiple file can cause problem. So, I think,
+for first time production purpose, writing everytin in one file, then after finishing up the base or the skeleton it can
+be seperated in multiple files. If the initial code is too big, we can always add big space to ensure there is a clear
+division between multiple chunk of codes.
+
+I didn't add any comment yet. The variables, class, function/method names are pretty much self-explanatory. So don't
+think adding comments is necessary yet. But if the code getts bigger and more complecated, then adding them wil help. But
+for now, adding commment would be just a waste of time. But I am thinking, what if later I need to add conmments, but
+feel lazy about doing so because it is a pain? So adding minimal comment would help for a long run I suppose.
+
+I was wondering what should I use to store the note texts. First I thought of python shelve. But that is too simple. So
+I decided to use an database to store the notes. To keep things light, I used sqlite3. Then I connected evrythin, and
+pretty much finished with my work.
+
+I faced a big drawback of using database this time. One is updaing the list of notes after deleting one row. If I delete
+a row form the middle, I need to change the id of all the row, which was set as a primary key of the table. But primary
+key can be updated. So I had to delete every row after the delted row, then add them one by one agian setting new id as
+one less than the previous id. It should take a lot of time to execute when the databse gets bigger.
+
+Next I did some graphical adjustmens. These are just hover effects and colors. Not anything extraordinary or anythong. But
+it took me some time to make evryting memory efficient. I had to make sure the temporary memory gets deleted perfectly to
+prevent memory leak. I didn't bother delteing everythig after the program was closed, because python should do that
+automatically.
