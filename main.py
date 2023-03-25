@@ -8,7 +8,7 @@ database_connection.commit()
 
 import os
 os.environ['KIVY_IMAGE'] = 'pil'
-os.environ["KIVY_NO_CONSOLELOG"] = "1"
+# os.environ["KIVY_NO_CONSOLELOG"] = "1"
 
 import kivy
 kivy.require('2.1.0')
@@ -44,6 +44,7 @@ with Window.canvas.before:
 class HoverButton(Button, HoverBehavior):
     def __init__(self, enter, leave, **kwargs):
         super(HoverButton, self).__init__(**kwargs)
+        self.border = (0, 0, 0, 0)
         self.enter = enter
         self.leave = leave
         # self.background_color = (0, 0, 0, 1)
@@ -90,9 +91,9 @@ def remove_widget_recursive(widget):
 class MainLayout(FloatLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.new_icon = HoverButton((0.1,0.2,0,0.5), (0.1,0.2,0,0.9),
+        self.new_icon = HoverButton((0.15,0.2,0.5,0.5), (0.25,0.6,0.8,0.9),
             text="N", 
-            background_color=(0.1,0.2,0,0.9),
+            background_color=(0.25,0.6,0.8,0.9),
             pos=(5,555), 
             size=(40, 40),
             font_name="AnonymousPro-Bold",
@@ -120,9 +121,10 @@ class MainLayout(FloatLayout):
             font_name="AnonymousPro-Regular",
             multiline=False,
             size_hint=(None, None))
-        self.search_icon = HoverButton((0.1,0.2,0,0.8), (0.1,0.2,0,0.95),
+        self.search_box.bind(on_text_validate=self.search_icon_callback)
+        self.search_icon = HoverButton((0.15,0.2,0.5,0.5), (0.25,0.6,0.8,0.9),
             text="Go", 
-            background_color=(0.1,0.2,0,0.9),
+            background_color=(0.25,0.6,0.8,0.9),
             pos=(730,563), 
             size=(28, 25),
             font_name="AnonymousPro-Bold",
@@ -130,9 +132,9 @@ class MainLayout(FloatLayout):
             color=(1, 1, 1, 1),
             size_hint=(None, None))
         self.search_icon.bind(on_release=self.search_icon_callback)
-        self.search_reset_icon = HoverButton((0.1,0.2,0,0.8), (0.1,0.2,0,0.95),
+        self.search_reset_icon = HoverButton((0.15,0.2,0.5,0.5), (0.25,0.6,0.8,0.9),
             text="X", 
-            background_color=(0.1,0.2,0,0.9),
+            background_color=(0.25,0.6,0.8,0.9),
             pos=(760,563), 
             size=(25, 25),
             # font_name="AnonymousPro-Bold",
@@ -171,10 +173,10 @@ class MainLayout(FloatLayout):
             else:
                 current_note = " " *(28 - len(current_note)) + current_note
             current_note = current_note + "   "
-            note_list.append(f"{current_id}    {current_datetime}    {current_note}")
+            note_list.append(f"{current_id}    {current_datetime}        {current_note}")
         note_list_container = ScrollView(
-            pos=(100, 100), 
-            size=(600, 350), 
+            pos=(80, 115), 
+            size=(640, 320), 
             size_hint=(None, None),
             scroll_wheel_distance = 100)
         note_button_container = BoxLayout(orientation='vertical',size_hint_y=None, height=len(note_list)*40)
@@ -185,9 +187,9 @@ class MainLayout(FloatLayout):
             return temp
 
         for note in note_list:
-            note_containing_buttion = HoverButton((0.5, 0.2, 0, 0.0), (0.5, 0.2, 0, 0.5),
+            note_containing_buttion = HoverButton((0.3,0.6,0,1), (1, 1, 1, 0.3),
                     text=note, 
-                    background_color=(0.5, 0.2, 0, 0.5),
+                    background_color=(1, 1, 1, 0.3),
                     font_name="AnonymousPro-Bold",
                     font_size='16sp',
                     size_hint_y=None,
@@ -222,18 +224,18 @@ class MainLayout(FloatLayout):
             size=(295, 120), 
             font_name="AnonymousPro-Regular",
             size_hint=(None, None))
-        note_add_button = HoverButton((0.4,0.7,0.0,0.5), (0.4,0.7,0.0,0.9), 
+        note_add_button = HoverButton((0.3,0.8,0.0,0.4), (0.3,0.8,0.0,0.8), 
             text="Add", 
-            background_color=(0.4,0.7,0.0,0.9), 
+            background_color=(0.3,0.8,0.0,0.8), 
             pos=(315,205), 
             size=(80, 30),
             font_name="AnonymousPro-Bold",
             font_size='16sp',
             color=(1, 1, 1, 1),
             size_hint=(None, None))
-        close_popup_button = HoverButton((0.7,0.4,0.0,0.5), (0.7,0.4,0.0,0.9),
+        close_popup_button = HoverButton((0.8,0.3,0.0,0.4), (0.8,0.3,0.0,0.8),
             text="Close", 
-            background_color=(0.7,0.4,0.0,0.9),
+            background_color=(0.8,0.3,0.0,0.8),
             pos=(400,205), 
             size=(80, 30),
             font_name="AnonymousPro-Bold",
@@ -282,18 +284,18 @@ class MainLayout(FloatLayout):
             font_name="AnonymousPro-Regular",
             size_hint=(None, None))
         note.cursor = (0, 0)
-        note_edit_button = HoverButton((0.1,0.9,0.2,0.4), (0.1,0.9,0.2,0.8),
+        note_edit_button = HoverButton((0.3,0.8,0.0,0.4), (0.3,0.8,0.0,0.8),
             text="OK", 
-            background_color=(0.1,0.9,0.2,0.7),
+            background_color=(0.3,0.8,0.0,0.8),
             pos=(400,205), 
             size=(80, 30),
             font_name="AnonymousPro-Bold",
             font_size='16sp',
             color=(1, 1, 1, 1),
             size_hint=(None, None))
-        delete_note_button = HoverButton((0.9,0.2,0.1,0.4), (0.9,0.2,0.1,0.8),
+        delete_note_button = HoverButton((0.8,0.3,0.0,0.4), (0.8,0.3,0.0,0.8),
             text="Delete", 
-            background_color=(0.9,0.2,0.1,0.8),
+            background_color=(0.8,0.3,0.0,0.8),
             pos=(315,205), 
             size=(80, 30),
             font_name="AnonymousPro-Bold",
